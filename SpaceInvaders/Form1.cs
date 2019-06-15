@@ -17,11 +17,15 @@ namespace SpaceInvaders
         Player user;
         Enemy enemy;
         List<Enemy> enemies;
+        List<List<Enemy>> totalEnemies;
         List<Bullet> bullets;
+        List<Bullet> enemyBullets;
         Bullet enemyBullet;
         bool shoot;
         bool attack;
 
+        bool changeEnemyDirection;
+        bool lower;
 
         public Form1()
         {
@@ -33,16 +37,37 @@ namespace SpaceInvaders
             map = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             gfx = Graphics.FromImage(map);
             user = new Player(ClientSize.Width / 2, ClientSize.Height - 25, 50, 25);
-            enemy = new Enemy(0, 0, 50, 25, 5);
             bullets = new List<Bullet>();
-            enemies = new List<Enemy>();
-            enemies.Add(enemy);
+            enemyBullets = new List<Bullet>();
+            
+            totalEnemies = new List<List<Enemy>>();
+            generateEnemies();
             shoot = false;
-            //enemyBullet = new Bullet();
             attack = false;
+
+            changeEnemyDirection = false;
+            lower = false;
         }
 
-
+        public void generateEnemies()
+        {
+            int height = 0;
+            for(int i = 0; i < 3; i++)
+            {
+                enemies = new List<Enemy>();
+                for (int j = 10; j < ClientSize.Width; j += 70)
+                {
+                    Enemy newEnemy = new Enemy(j, height, 50, 25, 5);
+                    enemies.Add(newEnemy);
+                    if(enemies.Count >= 5)
+                    {
+                        break;
+                    }
+                }
+                height += 30;
+                totalEnemies.Add(enemies);
+            }
+        }
 
         private void bulletCheck()
         {
@@ -64,20 +89,25 @@ namespace SpaceInvaders
         {
             gfx.Clear(Color.Transparent);
 
-            //user.drawPlayer(gfx);
+            //draw bullet
             for(int i = 0; i < bullets.Count; i++)
             {
                 bullets[i].Draw(Brushes.Green, gfx);
             }
 
-            for(int i = 0; i < enemies.Count; i++)
+            //draw enemies
+            for(int i = 0; i < totalEnemies.Count; i++)
             {
-                enemies[i].Draw(Brushes.Blue, gfx);
+                for(int j = 0; j < enemies.Count; j++)
+                {
+                    totalEnemies[i][j].Draw(Brushes.Blue, gfx);
+                }
             }
-            //enemy.Draw(Brushes.Blue, gfx);
+
+            //draw player
             user.Draw(Brushes.Pink, gfx);
 
-
+            //update bullets -------- need to fix
             for(int i = 0; i < bullets.Count; i++)
             {
                 bullets[i].Update(ClientSize.Width, ClientSize.Height);
@@ -87,11 +117,48 @@ namespace SpaceInvaders
                 }
             }
 
-            for(int i = 0; i < enemies.Count; i++)
+            //update enemies
+            for(int i = 0; i < totalEnemies.Count; i++)
             {
-                enemies[i].Update(ClientSize.Width, ClientSize.Height);
+                for(int j = 0; j < enemies.Count; j++)
+                {
+                    totalEnemies[i][j].Update();
+                }
             }
-            //enemy.Update(ClientSize.Width, ClientSize.Height);
+
+            if (lower)
+            {
+                for (int i = 0; i < totalEnemies.Count; i++)
+                {
+                    for (int j = 0; j < enemies.Count; j++)
+                    {
+                        totalEnemies[i][j].y += 30;
+                    }
+                }
+                lower = false;
+            }
+
+            //change direction of enemies based on edges
+            for (int i = 0; i < totalEnemies.Count; i++)
+            {
+                for (int j = 0; j < enemies.Count; j++)
+                {
+                    if(totalEnemies[i][enemies.Count - 1].x + totalEnemies[i][enemies.Count - 1].width > ClientSize.Width)
+                    {
+                        totalEnemies[i][enemies.Count - 1].xSpeed = -Math.Abs(totalEnemies[i][enemies.Count - 1].xSpeed);
+                        lower = true;
+                    }
+
+                    else if(totalEnemies[i][0].x < 0)
+                    {
+                        totalEnemies[i][enemies.Count - 1].xSpeed = Math.Abs(totalEnemies[i][enemies.Count - 1].xSpeed);
+                        lower = true;
+                    }
+
+                    totalEnemies[i][j].xSpeed = totalEnemies[i][enemies.Count - 1].xSpeed;
+                }
+            }
+
             user.updatePlayer(ClientSize.Width);
 
             if(shoot == true)
@@ -104,8 +171,18 @@ namespace SpaceInvaders
 
             if(attack == true)
             {
-                enemyBullet.Draw(Brushes.Red, gfx);
-                enemyBullet.Update(ClientSize.Width, ClientSize.Height);
+                for(int i =0; i < enemyBullets.Count; i++)
+                {
+                    enemyBullets[i].Draw(Brushes.Red, gfx);
+                    enemyBullets[i].Update(ClientSize.Width, ClientSize.Height);
+                    if(enemyBullets[i].y > ClientSize.Height)
+                    {
+                        enemyBullets.RemoveAt(i);
+                    }
+
+                }
+               // enemyBullet.Draw(Brushes.Red, gfx);
+               //enemyBullet.Update(ClientSize.Width, ClientSize.Height);
             }
 
             bulletCheck();
@@ -140,6 +217,7 @@ namespace SpaceInvaders
             if(enemyBulletTimer.Interval >= 1500)
             {
                 enemyBullet = new Bullet(enemies[0].x + (enemies[0].width / 2), enemies[0].y + enemies[0].height, 5, 5, 0, 10);
+                enemyBullets.Add(enemyBullet);
                 attack = true;
             }
         }
