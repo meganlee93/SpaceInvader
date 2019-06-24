@@ -8,3 +8,13 @@
 \\GMRDC1\Folder Redirection\megan.lee\Documents\Visual Studio 2019\Projects\SpaceInvaders\SpaceInvaders\obj\Debug\SpaceInvaders.csproj.CoreCompileInputs.cache
 \\GMRDC1\Folder Redirection\megan.lee\Documents\Visual Studio 2019\Projects\SpaceInvaders\SpaceInvaders\obj\Debug\SpaceInvaders.exe
 \\GMRDC1\Folder Redirection\megan.lee\Documents\Visual Studio 2019\Projects\SpaceInvaders\SpaceInvaders\obj\Debug\SpaceInvaders.pdb
+\\GMRDC1\Folder Redirection\megan.lee\Documents\GitHub\SpaceInvader\SpaceInvaders\bin\Debug\SpaceInvaders.exe.config
+\\GMRDC1\Folder Redirection\megan.lee\Documents\GitHub\SpaceInvader\SpaceInvaders\bin\Debug\SpaceInvaders.exe
+\\GMRDC1\Folder Redirection\megan.lee\Documents\GitHub\SpaceInvader\SpaceInvaders\bin\Debug\SpaceInvaders.pdb
+\\GMRDC1\Folder Redirection\megan.lee\Documents\GitHub\SpaceInvader\SpaceInvaders\obj\Debug\SpaceInvaders.csprojAssemblyReference.cache
+\\GMRDC1\Folder Redirection\megan.lee\Documents\GitHub\SpaceInvader\SpaceInvaders\obj\Debug\SpaceInvaders.Form1.resources
+\\GMRDC1\Folder Redirection\megan.lee\Documents\GitHub\SpaceInvader\SpaceInvaders\obj\Debug\SpaceInvaders.Properties.Resources.resources
+\\GMRDC1\Folder Redirection\megan.lee\Documents\GitHub\SpaceInvader\SpaceInvaders\obj\Debug\SpaceInvaders.csproj.GenerateResource.cache
+\\GMRDC1\Folder Redirection\megan.lee\Documents\GitHub\SpaceInvader\SpaceInvaders\obj\Debug\SpaceInvaders.csproj.CoreCompileInputs.cache
+\\GMRDC1\Folder Redirection\megan.lee\Documents\GitHub\SpaceInvader\SpaceInvaders\obj\Debug\SpaceInvaders.exe
+\\GMRDC1\Folder Redirection\megan.lee\Documents\GitHub\SpaceInvader\SpaceInvaders\obj\Debug\SpaceInvaders.pdb

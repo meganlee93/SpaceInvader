@@ -8,10 +8,12 @@ namespace SpaceInvaders
 {
     class Enemy : Shape
     {
-        public Enemy(int x, int y, int width, int height, int xSpeed, int ySpeed = 0) : base(x,y,width,height,xSpeed,ySpeed)
+        public Bullet bullet { get; set; }
+        public Enemy(Bullet bullet, int x, int y, int width, int height, int xSpeed, int ySpeed = 0) : base(x,y,width,height,xSpeed,ySpeed)
         {
-        
+            this.bullet = bullet;
         }
+
 
         public void Update()
         {

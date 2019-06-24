@@ -27,6 +27,11 @@ namespace SpaceInvaders
         bool changeEnemyDirection;
         bool lower;
 
+        int list;
+        int num;
+
+        bool delete = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -57,7 +62,9 @@ namespace SpaceInvaders
                 enemies = new List<Enemy>();
                 for (int j = 10; j < ClientSize.Width; j += 70)
                 {
-                    Enemy newEnemy = new Enemy(j, height, 50, 25, 5);
+                    enemyBullet = new Bullet(j + (50 / 2), height + 25, 5, 5, 0, 10);
+                    //enemyBullets.Add(enemyBullet);
+                    Enemy newEnemy = new Enemy(enemyBullet, j, height, 50, 25, 5);
                     enemies.Add(newEnemy);
                     if(enemies.Count >= 5)
                     {
@@ -73,16 +80,29 @@ namespace SpaceInvaders
         {
             for(int i = 0; i < bullets.Count; i++)
             {
-                for (int j = 0; j < enemies.Count; j++)
+                for (int j = 0; j < totalEnemies.Count; j++)
                 {
-                    if (bullets[i].HitBox.IntersectsWith(enemies[j].HitBox))
+                    for (int k = 0; k < enemies.Count; k++)
                     {
-                        enemies.RemoveAt(j);
-                        bullets.RemoveAt(i);
+                        if (bullets[i].HitBox.IntersectsWith(totalEnemies[j][k].HitBox))
+                        {
+                            totalEnemies[j].RemoveAt(k);                            
+                            bullets.RemoveAt(i);
+                            delete = true;
+                            break;
+                        }
+
+
+                    }
+
+                    if (delete)
+                    {
                         break;
                     }
+
+
                 }
-            }
+            }            
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
@@ -163,26 +183,18 @@ namespace SpaceInvaders
 
             if(shoot == true)
             { 
-                bullets.Add(new Bullet(user.x + (user.width / 2) - 5, user.y - user.height - 5,5, 5, 0, -5));
+                bullets.Add(new Bullet(user.x + (user.width / 2) - 5, user.y - user.height - 5,5, 5, 0, -15));
 
                 //attack = true;
                 shoot = false;
             }
 
-            if(attack == true)
-            {
-                for(int i =0; i < enemyBullets.Count; i++)
-                {
-                    enemyBullets[i].Draw(Brushes.Red, gfx);
-                    enemyBullets[i].Update(ClientSize.Width, ClientSize.Height);
-                    if(enemyBullets[i].y > ClientSize.Height)
-                    {
-                        enemyBullets.RemoveAt(i);
-                    }
 
-                }
-               // enemyBullet.Draw(Brushes.Red, gfx);
-               //enemyBullet.Update(ClientSize.Width, ClientSize.Height);
+
+            if (attack == true)
+            {
+                totalEnemies[list][num].bullet.Draw(Brushes.Red, gfx);
+                totalEnemies[list][num].bullet.Update(ClientSize.Width, ClientSize.Height);
             }
 
             bulletCheck();
@@ -193,12 +205,12 @@ namespace SpaceInvaders
         {
             if(e.KeyCode == Keys.Left)
             {
-                user.xSpeed = -10;
+                user.xSpeed = -20;
             }
 
             else if(e.KeyCode == Keys.Right)
             {
-                user.xSpeed = 10;
+                user.xSpeed = 20;
             }
 
             if(e.KeyCode == Keys.Up)
@@ -216,8 +228,14 @@ namespace SpaceInvaders
         {
             if(enemyBulletTimer.Interval >= 1500)
             {
-                enemyBullet = new Bullet(enemies[0].x + (enemies[0].width / 2), enemies[0].y + enemies[0].height, 5, 5, 0, 10);
-                enemyBullets.Add(enemyBullet);
+                Random random = new Random();
+                list = random.Next(0, totalEnemies.Count);
+                num = random.Next(0, totalEnemies[list].Count);
+
+                enemyBullet = new Bullet(totalEnemies[list][num].x + (totalEnemies[list][num].width / 2), totalEnemies[list][num].y + totalEnemies[list][num].height, 5, 5, 0, 20);
+                totalEnemies[list][num].bullet = enemyBullet;
+
+                //enemyBullets.Add(enemyBullet);
                 attack = true;
             }
         }
