@@ -12,5 +12,19 @@ namespace SpaceInvaders
         {
 
         }
+
+        public bool Update(int heightSize)
+        {
+            y += ySpeed;
+            if (y > heightSize)
+            {
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
+        }
     }
 }
